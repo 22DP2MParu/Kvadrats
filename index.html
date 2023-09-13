@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LGBTQI cube</title>
+    <style>
+        body {
+            background-image: url('bg.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        } 
+
+        #container {
+            background-image: url('bgsmall.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-size:cover;
+            width: 600px;
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+
+        #square {
+            width: 70px;
+            height: 70px;
+            position: absolute;
+            background-color: red;
+            transition: transform 0.2s;
+            border-radius: 8px;
+        }
+
+        #toggleButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="square"></div>
+    </div>
+    <button id="toggleButton">Toggle Animation (Press count: 0)</button>
+    <script>
+        const container = document.getElementById('container');
+        const square = document.getElementById('square');
+        const toggleButton = document.getElementById('toggleButton');
+        const squareWidth = 50;
+        const containerWidth = 600;
+        const containerHeight = 600;
+        let x = Math.random() * (containerWidth - squareWidth);
+        let y = Math.random() * (containerHeight - squareWidth);
+        let xSpeed = 2;
+        let ySpeed = 2;
+        let rotation = 0;
+        let isAnimating = true;
+        let clickCount = 0;
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function animateSquare() {
+            if (isAnimating) {
+                x += xSpeed;
+                y += ySpeed;
+
+                if (x + squareWidth > containerWidth || x < 0) {
+                    xSpeed *= -1;
+                    square.style.backgroundColor = getRandomColor();
+                }
+
+                if (y + squareWidth > containerHeight || y < 0) {
+                    ySpeed *= -1;
+                    square.style.backgroundColor = getRandomColor();
+                }
+
+                rotation += 2; // Adjust the rotation speed here
+                square.style.transform = `rotate(${rotation}deg)`;
+                square.style.left = x + 'px';
+                square.style.top = y + 'px';
+
+                requestAnimationFrame(animateSquare);
+            }
+        }
+
+        toggleButton.addEventListener('click', () => {
+            clickCount++;
+            toggleButton.textContent = `Toggle Animation (Press count: ${clickCount})`;
+        });
+
+        toggleButton.addEventListener('click', () => {
+            isAnimating = !isAnimating;
+            if (isAnimating) {
+                animateSquare();
+            }
+        });
+
+        animateSquare();
+    </script>
+</body>
+</html>
